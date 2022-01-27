@@ -38,6 +38,12 @@
             };
         }
 
+        public int StartingEmpytCount
+        {
+            get;
+            set;
+        }
+
         public event SelectedCellChanged SelectedCellChangedEvent;
 
         public event CellValueChanged CellValueChangedEvent;
@@ -46,9 +52,6 @@
 
         public void GenerateBoard()
         {
-            ////TODO: set this later with a difficulty type
-            int emptyCellCount = 3;
-
             List<int> seeds = Enumerable.Range(1, 9).ToList();
             int[] seededBoard = new int[]
             {
@@ -88,7 +91,7 @@
             Array.Copy(this.solvedBoard, this.currentBoard, this.solvedBoard.Length);
             List<int> emptyCells = new List<int>();
 
-            for (int index = 0; index < emptyCellCount; index++)
+            for (int index = 0; index < this.StartingEmpytCount; index++)
             {
                 int cellIndex = this.random.Next(0, this.solvedBoard.Length);
                 while (emptyCells.Contains(cellIndex))

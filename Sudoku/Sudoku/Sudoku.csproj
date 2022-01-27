@@ -116,9 +116,6 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Controls\InputButton.xaml.cs">
-      <DependentUpon>InputButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Converters\CellBackgroundConverter.cs" />
     <Compile Include="Events\BoardWasSolved.cs" />
     <Compile Include="Events\CellValueChanged.cs" />
@@ -166,10 +163,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\CellControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\InputButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

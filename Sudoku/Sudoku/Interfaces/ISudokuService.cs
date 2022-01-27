@@ -4,6 +4,12 @@
 
     public interface ISudokuService
     {
+        int StartingEmpytCount
+        {
+            get;
+            set;
+        }
+
         void GenerateBoard();
 
         int GetCellSolution(int cellIndex);

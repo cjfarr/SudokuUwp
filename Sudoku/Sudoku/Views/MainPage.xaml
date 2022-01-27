@@ -40,6 +40,13 @@
                     Height="50"
                     FontSize="24" 
                     FontWeight="SemiBold"/>
+            <TextBlock Text="{Binding StartingEmpytCountText}"
+                       Margin="0,5" />
+            <Slider Width="155" 
+                    Maximum="40" 
+                    Minimum="3" 
+                    SmallChange="1"
+                    Value="{Binding StartingEmpytCount, Mode=TwoWay}" />
         </StackPanel>
         <Border Grid.Row="1"
                 Grid.Column="1"

@@ -1,6 +1,5 @@
 ﻿namespace Sudoku.ViewModels
-{   
-    using Events;
+{
     using GalaSoft.MvvmLight.Command;
     using Interfaces;
     using Models;
@@ -15,6 +14,7 @@
         private ISudokuService sudokuService;
         private ObservableCollection<Region> regions;
         private ObservableCollection<InputButton> inputButtons;
+        private string startingEmpytCountText;
 
         private ICommand newGameCommand;
 
@@ -42,9 +42,33 @@
             }
         }
 
+        public int StartingEmpytCount
+        {
+            get
+            {
+                return this.sudokuService.StartingEmpytCount;
+            }
+
+            set
+            {
+                this.sudokuService.StartingEmpytCount = value;
+                this.RaisePropertyChange(nameof(this.StartingEmpytCount));
+                this.RaisePropertyChange(nameof(this.StartingEmpytCountText));
+            }
+        }
+
+        public string StartingEmpytCountText
+        {
+            get
+            {
+                return $"Starting Empty: {this.sudokuService.StartingEmpytCount}";
+            }
+        }
+
         public void Initialize()
         {
             this.sudokuService = ((SudokuApp)SudokuApp.Current).GetService<ISudokuService>();
+            this.sudokuService.StartingEmpytCount = 10;
 
             for (int index = 1; index <= 9; index++)
             {
