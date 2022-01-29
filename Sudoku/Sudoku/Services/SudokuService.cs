@@ -81,7 +81,7 @@
                 seeds.Remove(assignment);
             }
 
-            this.InitializedArray(0, ref this.solvedBoard);
+            this.InitializedArray(0, this.solvedBoard);
 
             for (int index = 0; index < this.solvedBoard.Length; index++)
             {
@@ -183,7 +183,7 @@
         public void UpdateSelectedCell(int cellIndex, int regionId)
         {
             this.currentSelectedCellId = cellIndex;
-            this.InitializedArray(0, ref this.selectedCellMap);
+            this.InitializedArray(0, this.selectedCellMap);
 
             foreach (int rowIndex in this.GetAllRowIndexes(cellIndex))
             {
@@ -243,7 +243,7 @@
             return true;
         }
 
-        private void InitializedArray(int defaultValue, ref int[] array)
+        private void InitializedArray(int defaultValue, int[] array)
         {
             for (int index = 0; index < array.Length; index++)
             {
