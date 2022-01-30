@@ -1,5 +1,6 @@
 ﻿namespace Sudoku.Views
 {
+    using Sudoku.Controls;
     using Sudoku.Interfaces;
     using System;
     using Windows.UI.Xaml.Controls;
@@ -49,6 +50,11 @@
 
                     break;
             }
+        }
+
+        private void OnErrorViewingButtonClick(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            this.progressPie.StartTimer(this.sudokuService);
         }
     }
 }

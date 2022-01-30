@@ -14,6 +14,7 @@
         private int[] solvedBoard;
         private int[] selectedCellMap;
         private int currentSelectedCellId;
+        private int currentSelectedRegionId;
 
         private Dictionary<int, int> offsetIndexByRegion;
 
@@ -36,12 +37,32 @@
                 { 8, 57 },
                 { 9, 60 }
             };
+
+            this.ViewTimeForErrors = new TimeSpan(0, 0, 0, 5, 500);
         }
 
         public int StartingEmpytCount
         {
             get;
             set;
+        }
+
+        public TimeSpan ViewTimeForErrors
+        {
+            get;
+            private set;
+        }
+
+        public bool IsShowingErrors
+        {
+            get;
+            private set;
+        }
+
+        public int RemainingErrorViews
+        {
+            get;
+            private set;
         }
 
         public event SelectedCellChanged SelectedCellChangedEvent;
@@ -52,6 +73,8 @@
 
         public void GenerateBoard()
         {
+            this.RemainingErrorViews = 2;
+
             List<int> seeds = Enumerable.Range(1, 9).ToList();
             int[] seededBoard = new int[]
             {
@@ -119,7 +142,8 @@
             };
 
             this.currentSelectedCellId = 0;
-            System.Diagnostics.Debug.WriteLine("GenerateBoard completed");
+            this.currentSelectedRegionId = 1;
+
             this.NewBoardGeneratedEvent?.Invoke();
             this.SelectedCellChangedEvent?.Invoke(this.selectedCellMap);
         }
@@ -183,6 +207,7 @@
         public void UpdateSelectedCell(int cellIndex, int regionId)
         {
             this.currentSelectedCellId = cellIndex;
+            this.currentSelectedRegionId = regionId;
             this.InitializedArray(0, this.selectedCellMap);
 
             foreach (int rowIndex in this.GetAllRowIndexes(cellIndex))
@@ -201,6 +226,17 @@
             }
 
             this.selectedCellMap[cellIndex] = 2;
+            if (this.IsShowingErrors)
+            {
+                for (int index = 0; index < this.currentBoard.Length; index++)
+                {
+                    if (this.currentBoard[index] > 0 && this.currentBoard[index] != this.solvedBoard[index])
+                    {
+                        this.selectedCellMap[index] = 3;
+                    }
+                }
+            }
+
             this.SelectedCellChangedEvent?.Invoke(this.selectedCellMap);
         }
 
@@ -241,6 +277,24 @@
             }
 
             return true;
+        }
+
+        public void ShowErrors()
+        {
+            if (this.RemainingErrorViews <= 0)
+            {
+                return;
+            }
+
+            this.RemainingErrorViews--;
+            this.IsShowingErrors = true;
+            this.UpdateSelectedCell(this.currentSelectedCellId, this.currentSelectedRegionId);
+        }
+
+        public void RemoveErrors()
+        {
+            this.IsShowingErrors = false;
+            this.UpdateSelectedCell(this.currentSelectedCellId, this.currentSelectedRegionId);
         }
 
         private void InitializedArray(int defaultValue, int[] array)

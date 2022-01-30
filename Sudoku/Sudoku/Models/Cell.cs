@@ -5,7 +5,6 @@
     internal class Cell : NotifyPropertyChangeModel
     {
         private ISudokuService sudokuService;
-        private string currentInput;
         private int selectionCode;
 
         public Cell(int cellIndex, int regionId, ISudokuService sudokuService)
@@ -27,7 +26,7 @@
                 return;
             }
 
-            this.CurrentInput = changedValue <= 0 ? string.Empty : changedValue.ToString();
+            this.RaisePropertyChange(nameof(this.CurrentInput));
         }
 
         public int SelectionCode
@@ -67,12 +66,6 @@
                 }
 
                 return currentValue.ToString();
-            }
-
-            set
-            {
-                this.currentInput = value;
-                this.RaisePropertyChange(nameof(this.CurrentInput));
             }
         }
 

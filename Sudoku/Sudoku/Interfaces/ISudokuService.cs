@@ -1,6 +1,7 @@
 ﻿namespace Sudoku.Interfaces
 {
     using Events;
+    using System;
 
     public interface ISudokuService
     {
@@ -8,6 +9,21 @@
         {
             get;
             set;
+        }
+
+        TimeSpan ViewTimeForErrors
+        {
+            get;
+        }
+
+        bool IsShowingErrors
+        {
+            get;
+        }
+
+        int RemainingErrorViews
+        {
+            get;
         }
 
         void GenerateBoard();
@@ -25,6 +41,10 @@
         int GetEmptyRemainingInputCount(int inputNumber);
 
         bool CheckIfBoardWasSolved();
+
+        void ShowErrors();
+
+        void RemoveErrors();
 
         event SelectedCellChanged SelectedCellChangedEvent;
 

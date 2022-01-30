@@ -14,7 +14,7 @@
         private ISudokuService sudokuService;
         private ObservableCollection<Region> regions;
         private ObservableCollection<InputButton> inputButtons;
-        private string startingEmpytCountText;
+        private bool isShowingErrors;
 
         private ICommand newGameCommand;
 
@@ -31,6 +31,14 @@
             get
             {
                 return this.inputButtons ?? (this.inputButtons = new ObservableCollection<InputButton>(Enumerable.Range(1, 9).Select(i => new InputButton(i))));
+            }
+        }
+
+        public bool IsShowingErrors
+        {
+            get
+            {
+                return this.isShowingErrors;
             }
         }
 
@@ -65,6 +73,22 @@
             }
         }
 
+        public int RemainingErrorViews
+        {
+            get
+            {
+                return this.sudokuService.RemainingErrorViews;
+            }
+        }
+
+        public bool CanUseShowErrors
+        {
+            get
+            {
+                return this.sudokuService.RemainingErrorViews > 0;
+            }
+        }
+
         public void Initialize()
         {
             this.sudokuService = ((SudokuApp)SudokuApp.Current).GetService<ISudokuService>();
@@ -74,8 +98,25 @@
             {
                 this.Regions.Add(new Region(index));
             }
-
+            
             this.sudokuService.GenerateBoard();
+            this.sudokuService.SelectedCellChangedEvent += this.OnSelectedCellChangedEvent;
+            this.sudokuService.NewBoardGeneratedEvent += () =>
+            {
+                this.RaisePropertyChange(nameof(this.RemainingErrorViews));
+                this.RaisePropertyChange(nameof(this.CanUseShowErrors));
+            };
+        }
+
+        private void OnSelectedCellChangedEvent(int[] selectedCellMap)
+        {
+            if (this.sudokuService.IsShowingErrors != this.isShowingErrors)
+            {
+                this.isShowingErrors = this.sudokuService.IsShowingErrors;
+                this.RaisePropertyChange(nameof(this.IsShowingErrors));
+                this.RaisePropertyChange(nameof(this.RemainingErrorViews));
+                this.RaisePropertyChange(nameof(this.CanUseShowErrors));
+            }
         }
 
         private async void OnNewGameRequested()

@@ -5,11 +5,24 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:vm="using:Sudoku.ViewModels"
       xmlns:ctrl="using:Sudoku.Controls"
+      xmlns:converters="using:Sudoku.Converters"
       mc:Ignorable="d"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.DataContext>
         <vm:MainPageViewModel x:Name="viewModel" />
     </Page.DataContext>
+    <Page.Resources>
+        <Style x:Key="functionButtonStyle"
+               TargetType="Button">
+            <Setter Property="Width" Value="155" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="Margin" Value="0,5" />
+        </Style>
+        <converters:BooleanToVisibilityConverter x:Key="booleanToVisibilityConverter" />
+    </Page.Resources>
     <Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height=".25*" 
@@ -31,22 +44,62 @@
                     Grid.Row="1"
                     Orientation="Vertical"
                     HorizontalAlignment="Center">
-            <Button x:Name="newGameButton"
-                    Content="New Game"
-                    Background="#FF0062FF"
-                    Foreground="White"
-                    Command="{Binding NewGameCommand}"
-                    Width="155"
-                    Height="50"
-                    FontSize="24" 
-                    FontWeight="SemiBold"/>
             <TextBlock Text="{Binding StartingEmpytCountText}"
                        Margin="0,5" />
             <Slider Width="155" 
                     Maximum="40" 
                     Minimum="3" 
                     SmallChange="1"
+                    Margin="0,3"
                     Value="{Binding StartingEmpytCount, Mode=TwoWay}" />
+            <Button x:Name="newGameButton"
+                    Content="New Game"
+                    Background="#FF0062FF"
+                    Style="{StaticResource functionButtonStyle}"
+                    Command="{Binding NewGameCommand}" />
+            <Button x:Name="errorViewingButton"
+                    Background="#FFFF3232"
+                    IsEnabled="{Binding CanUseShowErrors}"
+                    Style="{StaticResource functionButtonStyle}"
+                    Click="OnErrorViewingButtonClick"
+                    Padding="0">
+                <Button.Content>
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Width="155"
+                          Height="50">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ctrl:ProgressPie x:Name="progressPie"
+                                          Grid.ColumnSpan="2"
+                                          Grid.RowSpan="2"
+                                          Width="24"
+                                          Height="24"
+                                          Visibility="{Binding Path=IsShowingErrors, Converter={StaticResource booleanToVisibilityConverter}}" />
+                        <TextBlock Grid.Column="1"
+                                   Margin="0,4,7,0"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Right"
+                                   Text="{Binding RemainingErrorViews}"
+                                   FontSize="12"
+                                   Foreground="White" 
+                                   TextLineBounds="Tight"
+                                   Visibility="{Binding Path=IsShowingErrors, Converter={StaticResource booleanToVisibilityConverter}, ConverterParameter=True}" />
+                        <TextBlock Text="Show Errors"
+                                   Grid.ColumnSpan="2"
+                                   Grid.RowSpan="2"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center"
+                                   Visibility="{Binding Path=IsShowingErrors, Converter={StaticResource booleanToVisibilityConverter}, ConverterParameter=True}" />
+                    </Grid>
+                </Button.Content>
+            </Button>
         </StackPanel>
         <Border Grid.Row="1"
                 Grid.Column="1"

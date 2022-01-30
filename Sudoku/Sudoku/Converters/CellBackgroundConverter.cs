@@ -13,11 +13,13 @@
         {
             if (this.brushes == null)
             {
-                this.brushes = new SolidColorBrush[3]
+                ////0 = No guide, 1 = row, col, region guide, 2 = selected, 3 = error viewings
+                this.brushes = new SolidColorBrush[4]
                 {
                     new SolidColorBrush(Colors.White),
                     new SolidColorBrush(Color.FromArgb(255, 224, 246, 255)),
-                    new SolidColorBrush(Color.FromArgb(255, 255, 230, 140))
+                    new SolidColorBrush(Color.FromArgb(255, 255, 230, 140)),
+                    new SolidColorBrush(Color.FromArgb(255, 220, 68, 68))
                 };
             }
 
