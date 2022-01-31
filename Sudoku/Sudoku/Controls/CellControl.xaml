@@ -11,6 +11,7 @@
     d:DesignWidth="67">
     <UserControl.Resources>
         <converters:CellBackgroundConverter x:Key="cellBackgroundConverter" />
+        <converters:CellForegroundConverter x:Key="cellForegroundConverter" />
     </UserControl.Resources>
     <Grid Width="67"
           Height="67">
@@ -23,7 +24,7 @@
             <TextBlock Text="{Binding CurrentInput}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Foreground="Black" 
+                       Foreground="{Binding Path=SelectionCode, Mode=OneWay, Converter={StaticResource cellForegroundConverter}}"
                        FontWeight="SemiBold" 
                        FontSize="22" />
         </Border>

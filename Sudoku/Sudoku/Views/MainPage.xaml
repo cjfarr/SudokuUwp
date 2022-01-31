@@ -88,7 +88,6 @@
                                    HorizontalAlignment="Right"
                                    Text="{Binding RemainingErrorViews}"
                                    FontSize="12"
-                                   Foreground="White" 
                                    TextLineBounds="Tight"
                                    Visibility="{Binding Path=IsShowingErrors, Converter={StaticResource booleanToVisibilityConverter}, ConverterParameter=True}" />
                         <TextBlock Text="Show Errors"
